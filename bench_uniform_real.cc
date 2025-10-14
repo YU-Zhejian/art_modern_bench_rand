@@ -81,8 +81,8 @@ int main()
                 auto end = std::chrono::high_resolution_clock::now();
                 times.emplace_back(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
             }
-            std::cout << std::setw(10) << type.first << ": " << std::setw(42) << dist.name << ": " << describe(times) << " us"
-                      << std::endl;
+            std::cout << std::setw(10) << type.first << ": " << std::setw(42) << dist.name << ": " << describe(times)
+                      << " us" << std::endl;
         }
     }
 
