@@ -1,0 +1,132 @@
+/db
+/out
+.vs
+uniprot*
+*.fa
+*.out
+*.bed
+*.msgpack
+
+
+/.idea/*
+!/.idea/encodings.xml
+!/.idea/scopes/
+!/.idea/codeStyles/
+
+
+*.txt
+!requirements.txt
+*.tsv
+*.csv
+*.parquet
+*.json
+__pycache__
+*.pyc
+*.ipynb
+/renv/
+/.Rprofile
+*.pdf
+!CMakeLists.txt
+cmake-build*
+build/
+dist/
+*.pyi
+*.bin
+*tmp*
+/build*
+kdevelop*
+*.kdev4
+*.cppcheck
+cppcheck*
+_skbuild
+*.egg-info
+venv
+MANIFEST.in
+*.log
+!build_with_intel_compiler.sh
+_cmake_test_compile/
+/expr/
+backtrace.dump
+log.d/
+tutorial_data
+/opt
+!.markdownlint.json
+
+# History files
+.Rhistory
+.Rapp.history
+
+# Session Data files
+.RData
+.RDataTmp
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+/config
+/deps/simde
+CMakeLists.txt.user
+.cache
+*.tar
+*.tar.[gx]z
+*.tar.bz2
+*.t[gxb]z
+
+/.vscode/*
+!/.vscode/ltex.dictionary.en-US.txt
+!/.vscode/ltex.disabledRules.en-US.txt
+perf.data*
+*.geany
+*.f[aq]
