@@ -100,9 +100,9 @@ add_executable(bench_uniform_real bench_uniform_real.cc)
 target_link_libraries(bench_uniform_real PUBLIC ${LINK_LIBS})
 target_compile_options(bench_uniform_real PUBLIC ${COMPILE_OPTIONS})
 
-if(TESTU01_LIB_FOUND
-   AND TESTU01_MYLIB_FOUND
-   AND TESTU01_PROBDIST_FOUND)
+if(DEFINED TESTU01_LIB
+   AND DEFINED TESTU01_MYLIB
+   AND DEFINED TESTU01_PROBDIST)
     add_executable(bench_testu01 bench_testu01.cc)
     target_link_libraries(bench_testu01 PUBLIC ${LINK_LIBS} ${TESTU01_LIB} ${TESTU01_MYLIB} ${TESTU01_PROBDIST})
     target_compile_options(bench_testu01 PUBLIC ${COMPILE_OPTIONS})

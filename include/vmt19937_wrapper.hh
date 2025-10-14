@@ -45,8 +45,9 @@ public:
     VMT19937RandomDevice()
     {
         // FIXME: Abspath warning!
-        MT19937Matrix const* jumpMatrix = new MT19937Matrix(
-            "/home/yuzj/Documents/pbsim3_modern/deps/VMT19937-master/dat/mt/dat2/" + std::string(get_filename()));
+        MT19937Matrix const* jumpMatrix
+            = new MT19937Matrix("/home/yuzj/Documents/art_modern_bench_rand/deps/VMT19937-master/dat/mt/dat2/"
+                + std::string(get_filename()));
         rand_stream_ = new VMT19937<SIMD_N_BITS, QM_Scalar>(SEED_INIT, SEED_LENGTH, 0, nullptr, jumpMatrix);
         delete jumpMatrix;
     }
@@ -68,7 +69,7 @@ public:
     VSFMT19937RandomDevice()
     {
         SFMT19937Matrix const* jumpMatrix = new SFMT19937Matrix(
-            "/home/yuzj/Documents/pbsim3_modern/deps/VMT19937-master/dat/sfmt/" + std::string(get_filename()));
+            "/home/yuzj/Documents/art_modern_bench_rand/deps/VMT19937-master/dat/sfmt/" + std::string(get_filename()));
         rand_stream_ = new VSFMT19937<SIMD_N_BITS, QM_Scalar>(SEED_INIT, SEED_LENGTH, 0, nullptr, jumpMatrix);
         delete jumpMatrix;
     }
@@ -88,8 +89,9 @@ public:
 
     VMT19937BulkRandomDevice()
     {
-        MT19937Matrix const* jumpMatrix = new MT19937Matrix(
-            "/home/yuzj/Documents/pbsim3_modern/deps/VMT19937-master/dat/mt/dat2/" + std::string(get_filename()));
+        MT19937Matrix const* jumpMatrix
+            = new MT19937Matrix("/home/yuzj/Documents/art_modern_bench_rand/deps/VMT19937-master/dat/mt/dat2/"
+                + std::string(get_filename()));
         rand_stream_ = new VMT19937<SIMD_N_BITS, QM_Any>(SEED_INIT, SEED_LENGTH, 0, nullptr, jumpMatrix);
         delete jumpMatrix;
     }
@@ -117,7 +119,7 @@ public:
     VSFMT19937BulkRandomDevice()
     {
         SFMT19937Matrix const* jumpMatrix = new SFMT19937Matrix(
-            "/home/yuzj/Documents/pbsim3_modern/deps/VMT19937-master/dat/sfmt/" + std::string(get_filename()));
+            "/home/yuzj/Documents/art_modern_bench_rand/deps/VMT19937-master/dat/sfmt/" + std::string(get_filename()));
         rand_stream_ = new VSFMT19937<SIMD_N_BITS, QM_Any>(SEED_INIT, SEED_LENGTH, 0, nullptr, jumpMatrix);
         delete jumpMatrix;
     }
