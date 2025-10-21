@@ -72,10 +72,13 @@ find_library(TESTU01_LIB NAMES testu01)
 find_library(TESTU01_MYLIB NAMES testu01mylib mylib)
 find_library(TESTU01_PROBDIST NAMES testu01probdist probdist)
 
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/slim_sfmt-1.5.1/")
+
 # Requires libpcg-cpp-dev
 include_directories("${CMAKE_CURRENT_LIST_DIR}/deps/xoshiro/include/")
 include_directories("${CMAKE_CURRENT_LIST_DIR}/deps/other_rngs/")
 include_directories("${CMAKE_CURRENT_LIST_DIR}/deps/VMT19937-master/include/")
+include_directories("${CMAKE_CURRENT_LIST_DIR}/deps/slim_sfmt-1.5.1/")
 include_directories("${CMAKE_CURRENT_LIST_DIR}/include/")
 
 configure_file("${CMAKE_CURRENT_LIST_DIR}/include/bench_rand_conf.hh.in"

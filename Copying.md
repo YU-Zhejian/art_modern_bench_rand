@@ -24,6 +24,16 @@ The version we used (`vigna.h`) is a C++ implementation migrated from the C code
 
 The original C code is distributed under the [CC-0 license](http://creativecommons.org/publicdomain/zero/1.0/) with other files licensed under the MIT license.
 
+## SIMD-oriented Fast Mersenne Twister (SFMT) by Mutsuo Saito and Makoto Matsumoto
+
+Available from <http://ims.dse.ibaraki.ac.jp/rand_gen/>.
+
+Affected files:
+
+- `/deps/slim_sfmt-1.5.1/**`
+
+Licensed under the 3-clause BSD license.
+
 ## Other Random Generators Recommended and Adapted by M.E. O'Neill
 
 M.E. O'Neill, the author of the PCG random generator, had recommended several other random generators in his [blog post](https://www.pcg-random.org/posts/some-prng-implementations.html). He generously adapted those random generators from original authors and made them available under the MIT license.
