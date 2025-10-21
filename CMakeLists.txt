@@ -74,7 +74,6 @@ find_library(TESTU01_PROBDIST NAMES testu01probdist probdist)
 
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/slim_sfmt-1.5.1/")
 
-# Requires libpcg-cpp-dev
 include_directories("${CMAKE_CURRENT_LIST_DIR}/deps/xoshiro/include/")
 include_directories("${CMAKE_CURRENT_LIST_DIR}/deps/other_rngs/")
 include_directories("${CMAKE_CURRENT_LIST_DIR}/deps/VMT19937-master/include/")
