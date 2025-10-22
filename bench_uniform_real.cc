@@ -16,12 +16,12 @@
 
 /**
  * ON ARM MACHINE:
- * Double: boost::random::uniform_01:                gmean:      7,315; mean/sd:       7,317/182us
- * Float: boost::random::uniform_01:                 gmean:      9,516; mean/sd:       9,518/193us
- * Double: boost::random::uniform_real_distribution: gmean:     21,279; mean/sd:      21,281/272us
- * Float: boost::random::uniform_real_distribution:  gmean:     29,092; mean/sd:      29,094/402us
- * Double: absl::uniform_real_distribution:          gmean:     13,394; mean/sd:      13,394/143us
- * Float: absl::uniform_real_distribution:           gmean:     15,073; mean/sd:      15,075/229us
+ * Double: boost::random::uniform_01:                 gmean:      7,315; mean/sd:       7,317/182us
+ * _Float: boost::random::uniform_01:                 gmean:      9,516; mean/sd:       9,518/193us
+ * Double: boost::random::uniform_real_distribution:  gmean:     21,279; mean/sd:      21,281/272us
+ * _Float: boost::random::uniform_real_distribution:  gmean:     29,092; mean/sd:      29,094/402us
+ * Double: absl::uniform_real_distribution:           gmean:     13,394; mean/sd:      13,394/143us
+ * _Float: absl::uniform_real_distribution:           gmean:     15,073; mean/sd:      15,075/229us
  * STL's too slow to finish
  *
  * On x86_64 MACHINE:

@@ -5,12 +5,12 @@
 #include "vmt19937_wrapper.hh"
 #include "xoroshiro_wrapper.hh"
 
-#include "arc4.hpp"
-#include "gjrand.hpp"
-#include "jsf.hpp"
-#include "lehmer.hpp"
-#include "sfc.hpp"
-#include "splitmix.hpp"
+#include <arc4.hpp>
+#include <gjrand.hpp>
+#include <jsf.hpp>
+#include <lehmer.hpp>
+#include <sfc.hpp>
+#include <splitmix.hpp>
 
 #include <mkl.h>
 

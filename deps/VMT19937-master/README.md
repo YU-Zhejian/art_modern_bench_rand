@@ -4,7 +4,7 @@
 
 ## Introduction
 This repository implements a new SIMD-friendly random number generator, which has the same statistical properties and period as the MT19937, the well known generator proposed by Nishimura and Matsumoto [^1].
-It combines the random streams of multiple MT19937 instances with state vectors de-phased via jump-ahead transformations, then polls each instance in a round-robin fashion.
+It combines the random streams of multiple MT19937 instances with state_ vectors de-phased via jump-ahead transformations, then polls each instance in a round-robin fashion.
 By evolving their vector states simultaneously, the new generator achieves perfect vectorization, fully leveraging on SIMD hardware capabilities.
 Comprehensive test results demonstrate that the throughput of the new generator scales approximately linearly with the width of the SIMD registers used.
 
@@ -35,7 +35,7 @@ The associated query functions are:
     // note the vector dst mus be aligned on a 64 byte boundary
     void genrand_uint32_blk16(uint32_t* dst);
 
-    // generates a block of the same size as the state vector of uniform discrete random numbers in [0,0xffffffff] interval
+    // generates a block of the same size as the state_ vector of uniform discrete random numbers in [0,0xffffffff] interval
     // note the vector dst mus be aligned on a 64 byte boundary
     void genrand_uint32_stateBlk(uint32_t* dst);
 ```

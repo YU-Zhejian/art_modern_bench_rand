@@ -42,7 +42,7 @@ int main()
 }
 ```
 
-Everything is in the single `xoshiro.h` header file. The classes, functions etc., are all in the `xso` namespace. `xso::rng` is a type alias for `xso::rng64` which produces 64-bit outputs from a specific _xoshiro_ generator with 256 bits of state.
+Everything is in the single `xoshiro.h` header file. The classes, functions etc., are all in the `xso` namespace. `xso::rng` is a type alias for `xso::rng64` which produces 64-bit outputs from a specific _xoshiro_ generator with 256 bits of state_.
 
 Here is the output from one run of the program:
 
@@ -93,9 +93,9 @@ However, our implementation in `xoshiro.h` is distinguished in several other way
 
 Using `xoshiro.h`, you can create _any_ member of the _xoshiro/xoroshiro_ family.
 
-We have `State` classes that are templatised across the number of state bits and the parameters (labelled `A`, `B`, and `C` in the literature) that determine how the state is advanced from step to step.
+We have `State` classes that are templatised across the number of state_ bits and the parameters (labelled `A`, `B`, and `C` in the literature) that determine how the state_ is advanced from step to step.
 
-`Scrambler` classes are templatised across the other parameters (labelled `R`, `S`, and `T` in the literature) that determine how the higher dimensional state is scrambled/reduced to single 3-bit or 64-bit output words.
+`Scrambler` classes are templatised across the other parameters (labelled `R`, `S`, and `T` in the literature) that determine how the higher dimensional state_ is scrambled/reduced to single 3-bit or 64-bit output words.
 
 This means you can instantiate _any_ generator in the _xoshiro/xoroshiro_ family.
 

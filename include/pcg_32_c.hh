@@ -16,8 +16,8 @@
 class pcg32_c {
 public:
     pcg32_c(uint64_t state, uint64_t inc)
-        : state(state)
-        , inc(inc) { };
+        : state_(state)
+        , inc_(inc) { };
 
     pcg32_c()
         : pcg32_c { 0x853c49e6748fea9bULL, 0xda3e39cb94b95bdbULL } { };
@@ -29,9 +29,9 @@ public:
 
     uint32_t operator()()
     {
-        uint64_t const oldstate = state;
+        uint64_t const oldstate = state_;
         // Advance internal state
-        state = oldstate * 6364136223846793005ULL + (inc | 1);
+        state_ = oldstate * 6364136223846793005ULL + (inc_ | 1);
         // Calculate output function (XSH RR), uses old state for max ILP
         uint32_t const xorshifted = ((oldstate >> 18U) ^ oldstate) >> 27U;
         uint32_t const rot = oldstate >> 59U;
@@ -40,10 +40,10 @@ public:
 
     void seed(const uint64_t initstate, const uint64_t initseq)
     {
-        state = 0U;
-        inc = (initseq << 1U) | 1U;
+        state_ = 0U;
+        inc_ = (initseq << 1U) | 1U;
         (void)(*this)();
-        state += initstate;
+        state_ += initstate;
         (void)(*this)();
     }
 
@@ -55,6 +55,6 @@ public:
     }
 
 private:
-    uint64_t state;
-    uint64_t inc;
+    uint64_t state_;
+    uint64_t inc_;
 };
