@@ -26,6 +26,8 @@
 #include <splitmix.hpp>
 
 #ifdef MKL_FOUND
+#include "mkl_rng_wrapper.hh"
+
 #include <mkl.h>
 #endif
 
@@ -213,6 +215,21 @@ ABSL_ATTRIBUTE_ALWAYS_INLINE void bench_gsl(const gsl_rng_type* t)
     bench_bits_mkl(VSL_BRNG_PHILOX4X32X10, "MKL::VSL_BRNG_PHILOX4X32X10");
     // Yet another /dev/random
     // bench_bits_mkl(VSL_BRNG_NONDETERM, "MKL::VSL_BRNG_NONDETERM");
+
+    MKLRNGWrapper mkl_mt19937(VSL_BRNG_MT19937, static_cast<std::uint32_t>(seed()));
+    bench_bits_stl(mkl_mt19937, "MKL::MKLRNGWrapper<MT19937>");
+
+    MKLRNGWrapper mkl_sfmt19937(VSL_BRNG_SFMT19937, static_cast<std::uint32_t>(seed()));
+    bench_bits_stl(mkl_sfmt19937, "MKL::MKLRNGWrapper<SFMT19937>");
+
+    MKLRNGWrapper mkl_philox4x32x10(VSL_BRNG_PHILOX4X32X10, static_cast<std::uint32_t>(seed()));
+    bench_bits_stl(mkl_philox4x32x10, "MKL::MKLRNGWrapper<PHILOX4X32X10>");
+
+    MKLRNGWrapper mkl_ars5(VSL_BRNG_ARS5, static_cast<std::uint32_t>(seed()));
+    bench_bits_stl(mkl_ars5, "MKL::MKLRNGWrapper<ARS5>");
+
+    MKLRNGWrapper mkl_mt2203(VSL_BRNG_MT2203, static_cast<std::uint32_t>(seed()));
+    bench_bits_stl(mkl_mt2203, "MKL::MKLRNGWrapper<MT2203>");
 #endif
 }
 

@@ -7,6 +7,6 @@ if(BUILD_SHARED_LIBS)
 else()
     add_library(slim_sfmt STATIC ${SLIM_SFMT_SOURCES})
 endif()
-target_compile_definitions( slim_sfmt PRIVATE "SFMT_MEXP=19937" )
+target_compile_definitions(slim_sfmt PRIVATE "SFMT_MEXP=19937")
 
 install(TARGETS slim_sfmt)
