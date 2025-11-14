@@ -94,8 +94,10 @@ set(COMPILE_OPTIONS
     -Og
     -g)
 
+add_library(benchrand lib/sfmt_wrapper.cc)
+
 add_executable(bench_bits bench_bits.cc)
-target_link_libraries(bench_bits PUBLIC ${LINK_LIBS})
+target_link_libraries(bench_bits PUBLIC ${LINK_LIBS} benchrand slim_sfmt)
 target_compile_options(bench_bits PUBLIC ${COMPILE_OPTIONS})
 
 add_executable(bench_uniform_real bench_uniform_real.cc)

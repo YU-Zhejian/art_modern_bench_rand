@@ -1,4 +1,5 @@
 #pragma once
+#include <limits>
 
 // Define a macro that deletes copy and move constructors and assignment operators
 #define DELETE_COPY_MOVE(ClassName)                                                                                    \

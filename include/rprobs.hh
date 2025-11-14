@@ -60,7 +60,7 @@ public:
         , path_(path)
     {
         if (!rand_stream_.is_open()) {
-            throw std::system_error(errno, std::generic_category(), "Failed to open " + path_);
+            std::abort();
         }
     }
     ~CustomRandomDevice() { rand_stream_.close(); }

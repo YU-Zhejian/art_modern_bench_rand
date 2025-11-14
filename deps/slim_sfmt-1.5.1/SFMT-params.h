@@ -2,12 +2,7 @@
 #ifndef SFMT_PARAMS_H
 #define SFMT_PARAMS_H
 
-#if !defined(SFMT_MEXP)
-#if defined(__GNUC__) && !defined(__ICC)
-  #warning "SFMT_MEXP is not defined. I assume MEXP is 19937."
-#endif
-  #define SFMT_MEXP 19937
-#endif
+#define SFMT_MEXP 19937
 /*-----------------
   BASIC DEFINITIONS
   -----------------*/

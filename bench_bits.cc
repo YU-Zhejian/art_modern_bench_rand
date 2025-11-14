@@ -13,6 +13,7 @@
 #include "vigna.h"
 
 #ifdef BENCH_RAND_ARCH_X86
+#include "sfmt_wrapper.hh"
 #include "vmt19937_wrapper.hh"
 #endif
 
@@ -69,7 +70,7 @@ constexpr std::size_t NAME_LENGTH = 48;
 
 template <typename T> void bench_bits_stl(T& rng, const std::string& name)
 {
-    std::vector<std::size_t> times { };
+    std::vector<std::size_t> times {};
 
     std::vector<std::invoke_result_t<T>> gen_bits(N_BASES);
 
@@ -102,8 +103,8 @@ void bench_bits_mkl(const MKL_INT type, const std::string& name)
     vslNewStream(&stream, type, seed());
     VSLBRngProperties brng;
     vslGetBrngProperties(type, &brng);
-    std::vector<std::size_t> times { };
-    std::vector<std::uint32_t> gen_bits { };
+    std::vector<std::size_t> times {};
+    std::vector<std::uint32_t> gen_bits {};
     gen_bits.resize(N_BASES);
 
     for (std::size_t j = 0; j < N_REPLICA; j++) {
@@ -121,12 +122,11 @@ void bench_bits_mkl(const MKL_INT type, const std::string& name)
 }
 #endif
 
-#ifdef BENCH_RAND_ARCH_X86
-template <typename VMT19937BulkRandomDeviceImpl> void bench_bits_vmt19937(const std::string& name)
+template <typename BulkRandomDeviceImpl> void bench_bits_bulk(const std::string& name)
 {
-    VMT19937BulkRandomDeviceImpl rng { };
-    std::vector<std::size_t> times { };
-    std::vector<std::uint32_t> gen_bits { };
+    BulkRandomDeviceImpl rng {};
+    std::vector<std::size_t> times {};
+    std::vector<std::uint32_t> gen_bits {};
     gen_bits.resize(N_BASES);
 
     for (std::size_t j = 0; j < N_REPLICA; j++) {
@@ -148,10 +148,8 @@ template <typename VMT19937BulkRandomDeviceImpl> void bench_bits_vmt19937(const 
     } else {
         range = "(" + std::to_string(rng.min()) + ", " + std::to_string(rng.max()) + ")";
     }
-
     std::cout << std::setw(NAME_LENGTH) << name + range + ": " << describe(times) << " us" << std::endl;
 }
-#endif
 
 #ifdef GSL_FOUND
 ABSL_ATTRIBUTE_ALWAYS_INLINE void bench_gsl(const gsl_rng_type* t)
@@ -236,17 +234,17 @@ ABSL_ATTRIBUTE_ALWAYS_INLINE void bench_gsl(const gsl_rng_type* t)
 [[maybe_unused]] void absl_main()
 {
 #ifdef absl_FOUND
-    absl::BitGen rng_bitgen { };
+    absl::BitGen rng_bitgen {};
     bench_bits_stl<absl::BitGen>(rng_bitgen, "absl::BitGen");
 
-    absl::InsecureBitGen rng_insecure_bitgen { };
+    absl::InsecureBitGen rng_insecure_bitgen {};
     bench_bits_stl<absl::InsecureBitGen>(rng_insecure_bitgen, "absl::InsecureBitGen");
 #endif
 }
 
 [[maybe_unused]] void pcg_main()
 {
-    pcg32_c rng_pcg32_c { };
+    pcg32_c rng_pcg32_c {};
     rng_pcg32_c.seed();
     bench_bits_stl<pcg32_c>(rng_pcg32_c, "PCG::pcg32_c");
 
@@ -286,65 +284,75 @@ ABSL_ATTRIBUTE_ALWAYS_INLINE void bench_gsl(const gsl_rng_type* t)
 [[maybe_unused]] void vmt19937_main()
 {
 #ifdef BENCH_RAND_ARCH_X86
-    VMT19937RandomDevice rng_vmt19937_random_device { };
+    VMT19937RandomDevice rng_vmt19937_random_device {};
     bench_bits_stl<decltype(rng_vmt19937_random_device)>(rng_vmt19937_random_device, "VMT19937RandomDevice");
 
-    VSFMT19937RandomDevice rng_vsfmt19937_random_device { };
+    VSFMT19937RandomDevice rng_vsfmt19937_random_device {};
     bench_bits_stl<decltype(rng_vsfmt19937_random_device)>(rng_vsfmt19937_random_device, "VSFMT19937RandomDevice");
 
-    bench_bits_vmt19937<VMT19937BulkRandomDevice>("VMT19937BulkRandomDevice");
-    bench_bits_vmt19937<VSFMT19937BulkRandomDevice>("VSFMT19937BulkRandomDevice");
+    bench_bits_bulk<VMT19937BulkRandomDevice>("VMT19937BulkRandomDevice");
+    bench_bits_bulk<VSFMT19937BulkRandomDevice>("VSFMT19937BulkRandomDevice");
+#endif
+}
+
+[[maybe_unused]] void sfmt_main()
+{
+#ifdef BENCH_RAND_ARCH_X86
+    SFMTRandomDevice rng_sfmt_random_device {};
+    bench_bits_stl<decltype(rng_sfmt_random_device)>(rng_sfmt_random_device, "SFMTRandomDevice");
+
+    bench_bits_bulk<SFMTBulkRandomDevice>("SFMTBulkRandomDevice");
 #endif
 }
 
 [[maybe_unused]] void xso_main()
 {
-    XoroshiroWrapper<old::xoroshiro_2x32_star, uint32_t> x01 { };
+    XoroshiroWrapper<old::xoroshiro_2x32_star, uint32_t> x01 {};
     bench_bits_stl<decltype(x01)>(x01, "xoroshiro::2x32*");
 
-    XoroshiroWrapper<old::xoshiro_4x32_plus, uint32_t, 4> x03 { };
+    XoroshiroWrapper<old::xoshiro_4x32_plus, uint32_t, 4> x03 {};
     bench_bits_stl<decltype(x03)>(x03, "xoshiro::4x32+");
 
-    XoroshiroWrapper<old::xoshiro_4x32_plus_plus, uint32_t, 4> x04 { };
+    XoroshiroWrapper<old::xoshiro_4x32_plus_plus, uint32_t, 4> x04 {};
     bench_bits_stl<decltype(x04)>(x04, "xoshiro::4x32++");
 
-    XoroshiroWrapper<old::xoshiro_4x32_star_star, uint32_t, 4> x05 { };
+    XoroshiroWrapper<old::xoshiro_4x32_star_star, uint32_t, 4> x05 {};
     bench_bits_stl<decltype(x05)>(x05, "xoshiro::4x32**");
 
-    XoroshiroWrapper<old::xoroshiro_2x64_plus, uint64_t, 2> x06 { };
+    XoroshiroWrapper<old::xoroshiro_2x64_plus, uint64_t, 2> x06 {};
     bench_bits_stl<decltype(x06)>(x06, "xoroshiro::2x64+");
 
-    XoroshiroWrapper<old::xoroshiro_2x64_plus_plus, uint64_t, 2> x07 { };
+    XoroshiroWrapper<old::xoroshiro_2x64_plus_plus, uint64_t, 2> x07 {};
     bench_bits_stl<decltype(x07)>(x07, "xoroshiro::2x64++");
 
-    XoroshiroWrapper<old::xoroshiro_2x64_star_star, uint64_t, 2> x08 { };
+    XoroshiroWrapper<old::xoroshiro_2x64_star_star, uint64_t, 2> x08 {};
     bench_bits_stl<decltype(x08)>(x08, "xoroshiro::2x64**");
 
-    XoroshiroWrapper<old::xoshiro_4x64_plus, uint64_t, 4> x09 { };
+    XoroshiroWrapper<old::xoshiro_4x64_plus, uint64_t, 4> x09 {};
     bench_bits_stl<decltype(x09)>(x09, "xoshiro::4x64+");
 
-    XoroshiroWrapper<old::xoshiro_4x64_plus_plus, uint64_t, 4> x10 { };
+    XoroshiroWrapper<old::xoshiro_4x64_plus_plus, uint64_t, 4> x10 {};
     bench_bits_stl<decltype(x10)>(x10, "xoshiro::4x64++");
 
-    XoroshiroWrapper<old::xoshiro_4x64_star_star, uint64_t, 4> x11 { };
+    XoroshiroWrapper<old::xoshiro_4x64_star_star, uint64_t, 4> x11 {};
     bench_bits_stl<decltype(x11)>(x11, "xoshiro::4x64**");
 
-    XoroshiroWrapper<old::xoshiro_8x64_plus, uint64_t, 8> x12 { };
+    XoroshiroWrapper<old::xoshiro_8x64_plus, uint64_t, 8> x12 {};
     bench_bits_stl<decltype(x12)>(x12, "xoshiro::8x64+");
 
-    XoroshiroWrapper<old::xoshiro_8x64_plus_plus, uint64_t, 8> x13 { };
+    XoroshiroWrapper<old::xoshiro_8x64_plus_plus, uint64_t, 8> x13 {};
     bench_bits_stl<decltype(x13)>(x13, "xoshiro::8x64++");
 
-    XoroshiroWrapper<old::xoshiro_8x64_star_star, uint64_t, 8> x14 { };
+    XoroshiroWrapper<old::xoshiro_8x64_star_star, uint64_t, 8> x14 {};
     bench_bits_stl<decltype(x14)>(x14, "xoshiro::8x64**");
 
-    XoroshiroWrapper<old::xoroshiro_16x64_star, uint64_t, 16> x15 { };
+    XoroshiroWrapper<old::xoroshiro_16x64_star, uint64_t, 16> x15 {};
     bench_bits_stl<decltype(x15)>(x15, "xoroshiro::16x64*");
 
-    XoroshiroWrapper<old::xoroshiro_16x64_star_star, uint64_t, 16> x16 { };
+    XoroshiroWrapper<old::xoroshiro_16x64_star_star, uint64_t, 16> x16 {};
     bench_bits_stl<decltype(x16)>(x16, "xoroshiro::16x64**");
 
-    XoroshiroWrapper<old::xoroshiro_16x64_plus_plus, uint64_t, 16> x17 { };
+    XoroshiroWrapper<old::xoroshiro_16x64_plus_plus, uint64_t, 16> x17 {};
     bench_bits_stl<decltype(x17)>(x17, "xoroshiro::16x64++");
 }
 
@@ -396,6 +404,7 @@ int main() noexcept
     pcg_main();
     xso_main();
     vmt19937_main();
+    sfmt_main();
     other_rngs_main();
     return EXIT_SUCCESS;
 }

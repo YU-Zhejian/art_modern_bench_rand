@@ -42,16 +42,16 @@ struct DistInfo {
 
 int main()
 {
-    pcg32_fast engine { };
+    pcg32_fast engine {};
 
-    std::vector<double> tmp_qual_dists_ { };
+    std::vector<double> tmp_qual_dists_ {};
     tmp_qual_dists_.reserve(N_BASES);
 
-    std::vector<std::size_t> times { };
+    std::vector<std::size_t> times {};
 
     std::vector<DistInfo> const dists
-        = { { "boost::random::uniform_01", [](pcg32_fast& e) { return boost::random::uniform_01<double> { }(e); },
-                [](pcg32_fast& e) { return boost::random::uniform_01<float> { }(e); } },
+        = { { "boost::random::uniform_01", [](pcg32_fast& e) { return boost::random::uniform_01<double> {}(e); },
+                [](pcg32_fast& e) { return boost::random::uniform_01<float> {}(e); } },
               { "boost::random::uniform_real_distribution",
                   [](pcg32_fast& e) { return boost::random::uniform_real_distribution<double> { 0.0, 1.0 }(e); },
                   [](pcg32_fast& e) { return boost::random::uniform_real_distribution<float> { 0.0, 1.0 }(e); } },

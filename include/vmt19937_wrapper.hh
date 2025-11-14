@@ -7,11 +7,10 @@
 
 #include <climits>
 
-constexpr uint32_t SEED_LENGTH = 4;
-constexpr uint32_t SEED_INIT[SEED_LENGTH] = { 0x123, 0x234, 0x345, 0x456 };
-
 class VMT19937RandomDeviceBase {
 public:
+    constexpr static uint32_t SEED_LENGTH = 4;
+    constexpr static uint32_t SEED_INIT[SEED_LENGTH] = { 0x123, 0x234, 0x345, 0x456 };
     using result_type = std::uint32_t;
 
     SPAN_RESULT_TYPE
