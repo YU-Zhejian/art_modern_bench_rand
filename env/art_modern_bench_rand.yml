@@ -1,0 +1,26 @@
+# Work under Linux only.
+name: art_modern_bench_rand
+channels:
+  - nodefaults
+  - conda-forge
+
+dependencies:
+  - python=3.11
+
+  # Code formatter
+  - cmake_format
+  - black
+  - go-shfmt
+  - clang-format >= 21
+
+  # Build tools
+  - conda-forge::ninja
+  - conda-forge::cmake >=3.17
+  - conda-forge::make
+  - conda-forge::coreutils >=8.28
+  - conda-forge::bash
+  - conda-forge::pkg-config
+  - libboost-devel
+  - abseil-cpp
+  - gsl
+  # Conda have no testu01 package, install it manually after environment creation

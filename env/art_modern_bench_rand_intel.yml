@@ -1,0 +1,33 @@
+# Work under Linux only.
+name: art_modern_bench_rand_intel
+channels:
+  - nodefaults
+  - conda-forge
+  - https://software.repos.intel.com/python/conda
+
+dependencies:
+  - python=3.11
+
+  # Code formatter
+  - cmake_format
+  - black
+  - go-shfmt
+  - clang-format >= 21
+
+  # Build tools
+  - conda-forge::ninja
+  - conda-forge::cmake >=3.17
+  - conda-forge::make
+  - conda-forge::coreutils >=8.28
+  - conda-forge::bash
+  - conda-forge::pkg-config
+  - libboost-devel
+  - abseil-cpp
+  - gsl
+  # Conda have no testu01 package, install it manually after environment creation
+
+  # Intel oneAPI packages
+  - dpcpp_linux-64=2025.3.0
+  - mkl-devel=2025.3.0
+  - impi-devel=2021.17.0
+  - intel-openmp=2025.3.0

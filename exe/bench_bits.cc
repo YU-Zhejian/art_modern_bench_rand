@@ -45,6 +45,11 @@
 #include <boost/random.hpp>
 #endif
 
+// Boost timer
+#ifdef WITH_BOOST_TIMER
+#include <boost/timer/timer.hpp>
+#endif
+
 #ifdef absl_FOUND
 #include <absl/base/attributes.h>
 #include <absl/random/random.h>
@@ -208,20 +213,20 @@ ABSL_ATTRIBUTE_ALWAYS_INLINE void bench_gsl(const gsl_rng_type* t)
     // Yet another /dev/random
     // bench_bits_mkl(VSL_BRNG_NONDETERM, "MKL::VSL_BRNG_NONDETERM");
 
-    MKLRNGWrapper mkl_mt19937(VSL_BRNG_MT19937, static_cast<std::uint32_t>(seed()));
-    bench_bits_stl(mkl_mt19937, "MKL::MKLRNGWrapper<MT19937>");
-
-    MKLRNGWrapper mkl_sfmt19937(VSL_BRNG_SFMT19937, static_cast<std::uint32_t>(seed()));
-    bench_bits_stl(mkl_sfmt19937, "MKL::MKLRNGWrapper<SFMT19937>");
-
-    MKLRNGWrapper mkl_philox4x32x10(VSL_BRNG_PHILOX4X32X10, static_cast<std::uint32_t>(seed()));
-    bench_bits_stl(mkl_philox4x32x10, "MKL::MKLRNGWrapper<PHILOX4X32X10>");
-
-    MKLRNGWrapper mkl_ars5(VSL_BRNG_ARS5, static_cast<std::uint32_t>(seed()));
-    bench_bits_stl(mkl_ars5, "MKL::MKLRNGWrapper<ARS5>");
-
-    MKLRNGWrapper mkl_mt2203(VSL_BRNG_MT2203, static_cast<std::uint32_t>(seed()));
-    bench_bits_stl(mkl_mt2203, "MKL::MKLRNGWrapper<MT2203>");
+    // MKLRNGWrapper mkl_mt19937(VSL_BRNG_MT19937, static_cast<MKL_UINT>(seed()));
+    // bench_bits_stl(mkl_mt19937, "MKL::MKLRNGWrapper<MT19937>");
+    //
+    // MKLRNGWrapper mkl_sfmt19937(VSL_BRNG_SFMT19937, static_cast<MKL_UINT>(seed()));
+    // bench_bits_stl(mkl_sfmt19937, "MKL::MKLRNGWrapper<SFMT19937>");
+    //
+    // MKLRNGWrapper mkl_philox4x32x10(VSL_BRNG_PHILOX4X32X10, static_cast<MKL_UINT>(seed()));
+    // bench_bits_stl(mkl_philox4x32x10, "MKL::MKLRNGWrapper<PHILOX4X32X10>");
+    //
+    // MKLRNGWrapper mkl_ars5(VSL_BRNG_ARS5, static_cast<MKL_UINT>(seed()));
+    // bench_bits_stl(mkl_ars5, "MKL::MKLRNGWrapper<ARS5>");
+    //
+    // MKLRNGWrapper mkl_mt2203(VSL_BRNG_MT2203, static_cast<MKL_UINT>(seed()));
+    // bench_bits_stl(mkl_mt2203, "MKL::MKLRNGWrapper<MT2203>");
 #endif
 }
 
@@ -372,6 +377,13 @@ ABSL_ATTRIBUTE_ALWAYS_INLINE void bench_gsl(const gsl_rng_type* t)
 
 int main() noexcept
 {
+#ifdef WITH_BOOST_TIMER
+    std::cout << "Boost::timer started." << std::endl;
+    boost::timer::cpu_timer t;
+    t.start();
+#else
+    BOOST_LOG_TRIVIAL(warning) << "Boost::timer not found! Resource consumption statistics disabled.";
+#endif
     stl_main();
     boost_main();
     mkl_main();
@@ -381,5 +393,9 @@ int main() noexcept
     xso_main();
     sfmt_main();
     other_rngs_main();
+#ifdef WITH_BOOST_TIMER
+    t.stop();
+    std::cout << "Time spent: " << t.format(3, "%ws wall, %us user + %ss system = %ts CPU (%p%)") << std::endl;
+#endif
     return EXIT_SUCCESS;
 }

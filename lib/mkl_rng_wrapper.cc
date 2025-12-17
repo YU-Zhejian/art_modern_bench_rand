@@ -1,6 +1,8 @@
 #include "mkl_rng_wrapper.hh"
 
-MKLRNGWrapper::MKLRNGWrapper(const int type, const unsigned int seed)
+#include <mkl.h>
+
+MKLRNGWrapper::MKLRNGWrapper(const MKL_INT type, const MKL_UINT seed)
 {
     vslNewStream(&stream_, type, seed);
     VSLBRngProperties brng;

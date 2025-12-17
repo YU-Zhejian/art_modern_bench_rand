@@ -4,3 +4,4 @@
 #cmakedefine GSL_FOUND
 #cmakedefine absl_FOUND
 #cmakedefine Boost_FOUND
+#cmakedefine WITH_BOOST_TIMER

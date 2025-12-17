@@ -6,6 +6,9 @@
 # See also: https://developer.arm.com/Tools%20and%20Software/Arm%20Compiler%20for%20Linux#Downloads
 
 cmake_minimum_required(VERSION 3.17)
+if(NOT DEFINED BUILD_SHARED_LIBS)
+    set(BUILD_SHARED_LIBS ON)
+endif()
 
 if(NOT DEFINED BOOST_CONFIG_PROVIDED_BY_BOOST)
     set(BOOST_CONFIG_PROVIDED_BY_BOOST ON)
@@ -25,16 +28,26 @@ project(bench_rand C CXX)
 # Specify C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS  OFF)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_EXTENSIONS  OFF)
+
 
 set(LINK_LIBS "")
 
 # Find Boost
-find_package(Boost REQUIRED COMPONENTS random filesystem)
+find_package(
+    Boost REQUIRED
+    COMPONENTS random filesystem
+    OPTIONAL_COMPONENTS timer)
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
     set(LINK_LIBS Boost::filesystem ${LINK_LIBS})
+endif()
+if(Boost_timer_FOUND)
+    set(WITH_BOOST_TIMER ON)
+    set(LINK_LIBS ${LINK_LIBS} Boost::timer)
 endif()
 
 # Find MKL
@@ -92,29 +105,45 @@ set(COMPILE_OPTIONS
     -Wextra
     -Wpedantic
     -Og
-    -g)
+    -g3)
 
-file(GLOB LIBBENCHRAND_SOURCES "lib/*.cc")
-add_library(benchrand ${LIBBENCHRAND_SOURCES})
+set(
+        LIBBENCHRAND_SOURCES
+        "lib/benchmark_utils.cc"
+        "lib/rprobs.cc"
+        "lib/sfmt_wrapper.cc"
+)
+if (MKL_FOUND)
+    list(APPEND LIBBENCHRAND_SOURCES "lib/mkl_rng_wrapper.cc")
+endif()
+if (GSL_FOUND)
+    list(APPEND LIBBENCHRAND_SOURCES "lib/gsl_rng_wrapper.cc")
+endif()
+
+if (BUILD_SHARED_LIBS)
+    add_library(benchrand SHARED ${LIBBENCHRAND_SOURCES})
+else()
+    add_library(benchrand STATIC ${LIBBENCHRAND_SOURCES})
+endif()
 target_compile_options(benchrand PRIVATE ${COMPILE_OPTIONS})
 
-add_executable(bench_bits bench_bits.cc)
+add_executable(bench_bits exe/bench_bits.cc)
 target_link_libraries(bench_bits PUBLIC ${LINK_LIBS} benchrand slim_sfmt)
 target_compile_options(bench_bits PRIVATE ${COMPILE_OPTIONS})
 
-add_executable(bench_uniform_real bench_uniform_real.cc)
+add_executable(bench_uniform_real exe/bench_uniform_real.cc)
 target_link_libraries(bench_uniform_real PUBLIC ${LINK_LIBS} benchrand)
 target_compile_options(bench_uniform_real PRIVATE ${COMPILE_OPTIONS})
 
 if(DEFINED TESTU01_LIB
    AND DEFINED TESTU01_MYLIB
    AND DEFINED TESTU01_PROBDIST)
-    add_executable(bench_testu01 bench_testu01.cc)
+    add_executable(bench_testu01 exe/bench_testu01.cc)
     target_link_libraries(bench_testu01 PUBLIC ${LINK_LIBS} benchrand ${TESTU01_LIB} ${TESTU01_MYLIB}
                                                ${TESTU01_PROBDIST})
     target_compile_options(bench_testu01 PRIVATE ${COMPILE_OPTIONS})
 
-    add_executable(testu01_main testu01_main.c)
+    add_executable(testu01_main exe/testu01_main.c)
     target_link_libraries(testu01_main PUBLIC ${LINK_LIBS} benchrand ${TESTU01_LIB} ${TESTU01_MYLIB}
                                               ${TESTU01_PROBDIST})
     target_compile_options(testu01_main PRIVATE ${COMPILE_OPTIONS})
