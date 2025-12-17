@@ -6,7 +6,6 @@
 #include <cstdlib>
 #include <iomanip>
 #include <numeric>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -34,11 +33,4 @@ template <typename T> T sd(const std::vector<T>& data, T mean_)
     return std::sqrt(sum_squared_diff / static_cast<T>(data.size() - 1));
 }
 
-static std::string describe(const std::vector<std::size_t>& times)
-{
-    auto const mean_ = mean(times);
-    std::ostringstream oss;
-    oss << "gmean: " << std::setw(10) << formatWithCommas(geometric_mean(times)) << "; mean/sd: " << std::setw(15)
-        << formatWithCommas(mean_) + "/" + formatWithCommas(sd(times, mean_));
-    return oss.str();
-}
+std::string describe(const std::vector<std::size_t>& times);

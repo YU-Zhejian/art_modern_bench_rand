@@ -2,7 +2,6 @@
 #include "gsl_rng_wrapper.hh"
 #include "rprobs.hh"
 #include "vigna.h"
-#include "vmt19937_wrapper.hh"
 #include "xoroshiro_wrapper.hh"
 
 #include <arc4.hpp>
@@ -506,17 +505,6 @@ void bench_bits_mkl(const MKL_INT type, const std::string& name) { MklBenchmarki
     // bench_bits_mkl(VSL_BRNG_MCG59, "MKL::VSL_BRNG_MCG59");
 }
 
-[[maybe_unused]] void vmt19937_main()
-{
-    // All tests were passed
-    VMT19937RandomDevice rng_vmt19937_random_device {};
-    bench_bits_stl<decltype(rng_vmt19937_random_device)>(rng_vmt19937_random_device, "VMT19937RandomDevice");
-
-    // All tests were passed
-    VSFMT19937RandomDevice rng_vsfmt19937_random_device {};
-    bench_bits_stl<decltype(rng_vsfmt19937_random_device)>(rng_vsfmt19937_random_device, "VSFMT19937RandomDevice");
-}
-
 [[maybe_unused]] void gsl_main()
 {
     // All tests were passed
@@ -826,7 +814,6 @@ int main() noexcept
     pcg_main();
     boost_main();
     mkl_main();
-    vmt19937_main();
     gsl_main();
     xso_main();
     other_rngs_main();

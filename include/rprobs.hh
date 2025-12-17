@@ -17,11 +17,11 @@ constexpr std::size_t N_BASES = (1 << 10);
 constexpr std::size_t N_TIMES = (1 << 10);
 constexpr std::size_t N_REPLICA = 200UL;
 
-ABSL_ATTRIBUTE_ALWAYS_INLINE inline static uint64_t seed()
+static uint64_t seed()
 {
     return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch())
                .count()
-        * static_cast<uint64_t>(std::hash<std::thread::id>()(std::this_thread::get_id()));
+        * std::hash<std::thread::id>()(std::this_thread::get_id());
 }
 
 static std::string formatWithCommas(std::size_t number)

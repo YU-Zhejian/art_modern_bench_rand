@@ -14,7 +14,6 @@
 
 #ifdef BENCH_RAND_ARCH_X86
 #include "sfmt_wrapper.hh"
-#include "vmt19937_wrapper.hh"
 #endif
 
 #include "xoroshiro_wrapper.hh"
@@ -281,20 +280,6 @@ ABSL_ATTRIBUTE_ALWAYS_INLINE void bench_gsl(const gsl_rng_type* t)
 #endif
 }
 
-[[maybe_unused]] void vmt19937_main()
-{
-#ifdef BENCH_RAND_ARCH_X86
-    VMT19937RandomDevice rng_vmt19937_random_device {};
-    bench_bits_stl<decltype(rng_vmt19937_random_device)>(rng_vmt19937_random_device, "VMT19937RandomDevice");
-
-    VSFMT19937RandomDevice rng_vsfmt19937_random_device {};
-    bench_bits_stl<decltype(rng_vsfmt19937_random_device)>(rng_vsfmt19937_random_device, "VSFMT19937RandomDevice");
-
-    bench_bits_bulk<VMT19937BulkRandomDevice>("VMT19937BulkRandomDevice");
-    bench_bits_bulk<VSFMT19937BulkRandomDevice>("VSFMT19937BulkRandomDevice");
-#endif
-}
-
 [[maybe_unused]] void sfmt_main()
 {
 #ifdef BENCH_RAND_ARCH_X86
@@ -403,7 +388,6 @@ int main() noexcept
     gsl_main();
     pcg_main();
     xso_main();
-    vmt19937_main();
     sfmt_main();
     other_rngs_main();
     return EXIT_SUCCESS;

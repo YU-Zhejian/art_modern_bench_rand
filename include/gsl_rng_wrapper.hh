@@ -2,8 +2,6 @@
 
 #include "class_utils.hh"
 
-#include <absl/base/attributes.h>
-
 #include <gsl/gsl_rng.h>
 
 #include <string>
@@ -22,9 +20,9 @@ public:
         gsl_rng_set(r, seed);
     }
     ~GslRngWrapper() { gsl_rng_free(r); }
-    ABSL_ATTRIBUTE_ALWAYS_INLINE result_type operator()() { return gsl_rng_get(r); }
-    ABSL_ATTRIBUTE_ALWAYS_INLINE result_type min() { return gsl_rng_min(r); }
-    ABSL_ATTRIBUTE_ALWAYS_INLINE result_type max() { return gsl_rng_max(r); }
+    result_type operator()() { return gsl_rng_get(r); }
+    result_type min() { return gsl_rng_min(r); }
+    result_type max() { return gsl_rng_max(r); }
     [[nodiscard]] std::string name() const { return gsl_rng_name(r); }
 
 private:

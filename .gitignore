@@ -130,3 +130,4 @@ CMakeLists.txt.user
 perf.data*
 *.geany
 *.f[aq]
+/bin/
