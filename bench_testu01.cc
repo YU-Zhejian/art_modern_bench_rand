@@ -23,8 +23,6 @@
 
 #include <pcg_random.hpp>
 
-#include <pcg_32_c.hh>
-
 #include <algorithm>
 #include <cstdint>
 #include <cstdlib>
@@ -438,12 +436,7 @@ void bench_bits_mkl(const MKL_INT type, const std::string& name) { MklBenchmarki
 }
 
 [[maybe_unused]] void pcg_main()
-{
-    pcg32_c rng_pcg32_c {};
-    rng_pcg32_c.seed(seed(), reinterpret_cast<intptr_t>(&rng_pcg32_c));
-    bench_bits_stl<pcg32_c>(rng_pcg32_c, "PCG::pcg32_c");
-
-    // All tests were passed
+{ // All tests were passed
     pcg32 rng_pcg32 { static_cast<unsigned int>(seed()) };
     bench_bits_stl<pcg32>(rng_pcg32, "PCG::pcg32");
 

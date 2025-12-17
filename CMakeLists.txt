@@ -77,6 +77,7 @@ add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/deps/slim_sfmt-1.5.1/")
 include_directories("${CMAKE_CURRENT_LIST_DIR}/deps/xoshiro/include/")
 include_directories("${CMAKE_CURRENT_LIST_DIR}/deps/other_rngs/")
 include_directories("${CMAKE_CURRENT_LIST_DIR}/deps/slim_sfmt-1.5.1/")
+include_directories("${CMAKE_CURRENT_LIST_DIR}/deps/pcg-cpp-0.98/include/")
 include_directories("${CMAKE_CURRENT_LIST_DIR}/include/")
 
 configure_file("${CMAKE_CURRENT_LIST_DIR}/include/bench_rand_conf.hh.in"
@@ -95,24 +96,26 @@ set(COMPILE_OPTIONS
 
 file(GLOB LIBBENCHRAND_SOURCES "lib/*.cc")
 add_library(benchrand ${LIBBENCHRAND_SOURCES})
-target_compile_options( benchrand PRIVATE ${COMPILE_OPTIONS})
+target_compile_options(benchrand PRIVATE ${COMPILE_OPTIONS})
 
 add_executable(bench_bits bench_bits.cc)
 target_link_libraries(bench_bits PUBLIC ${LINK_LIBS} benchrand slim_sfmt)
 target_compile_options(bench_bits PRIVATE ${COMPILE_OPTIONS})
 
 add_executable(bench_uniform_real bench_uniform_real.cc)
-target_link_libraries(bench_uniform_real PUBLIC ${LINK_LIBS})
+target_link_libraries(bench_uniform_real PUBLIC ${LINK_LIBS} benchrand)
 target_compile_options(bench_uniform_real PRIVATE ${COMPILE_OPTIONS})
 
 if(DEFINED TESTU01_LIB
    AND DEFINED TESTU01_MYLIB
    AND DEFINED TESTU01_PROBDIST)
     add_executable(bench_testu01 bench_testu01.cc)
-    target_link_libraries(bench_testu01 PUBLIC ${LINK_LIBS} ${TESTU01_LIB} ${TESTU01_MYLIB} ${TESTU01_PROBDIST})
+    target_link_libraries(bench_testu01 PUBLIC ${LINK_LIBS} benchrand ${TESTU01_LIB} ${TESTU01_MYLIB}
+                                               ${TESTU01_PROBDIST})
     target_compile_options(bench_testu01 PRIVATE ${COMPILE_OPTIONS})
 
     add_executable(testu01_main testu01_main.c)
-    target_link_libraries(testu01_main PUBLIC ${LINK_LIBS} ${TESTU01_LIB} ${TESTU01_MYLIB} ${TESTU01_PROBDIST})
+    target_link_libraries(testu01_main PUBLIC ${LINK_LIBS} benchrand ${TESTU01_LIB} ${TESTU01_MYLIB}
+                                              ${TESTU01_PROBDIST})
     target_compile_options(testu01_main PRIVATE ${COMPILE_OPTIONS})
 endif()

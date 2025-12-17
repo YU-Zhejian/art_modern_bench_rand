@@ -52,15 +52,10 @@
 
 #include <pcg_random.hpp>
 
-#include <pcg_32_c.hh>
-
 #include <algorithm>
 #include <chrono>
-#include <cstdint>
-#include <fstream>
 #include <iomanip>
 #include <random>
-#include <utility>
 #include <vector>
 
 namespace {
@@ -243,10 +238,6 @@ ABSL_ATTRIBUTE_ALWAYS_INLINE void bench_gsl(const gsl_rng_type* t)
 
 [[maybe_unused]] void pcg_main()
 {
-    pcg32_c rng_pcg32_c {};
-    rng_pcg32_c.seed();
-    bench_bits_stl<pcg32_c>(rng_pcg32_c, "PCG::pcg32_c");
-
     pcg32 rng_pcg32 { static_cast<unsigned int>(seed()) };
     bench_bits_stl<pcg32>(rng_pcg32, "PCG::pcg32");
 

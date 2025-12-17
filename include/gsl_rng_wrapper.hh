@@ -10,20 +10,13 @@ class GslRngWrapper {
 public:
     DELETE_COPY_MOVE(GslRngWrapper)
     using result_type = decltype(gsl_rng_get(nullptr));
-    explicit GslRngWrapper(const gsl_rng_type* t)
-        : r(gsl_rng_alloc(t))
-    {
-    }
-    GslRngWrapper(const gsl_rng_type* t, result_type seed)
-        : GslRngWrapper(t)
-    {
-        gsl_rng_set(r, seed);
-    }
-    ~GslRngWrapper() { gsl_rng_free(r); }
-    result_type operator()() { return gsl_rng_get(r); }
-    result_type min() { return gsl_rng_min(r); }
-    result_type max() { return gsl_rng_max(r); }
-    [[nodiscard]] std::string name() const { return gsl_rng_name(r); }
+    explicit GslRngWrapper(const gsl_rng_type* t);
+    GslRngWrapper(const gsl_rng_type* t, result_type seed);
+    ~GslRngWrapper();
+    result_type operator()();
+    [[nodiscard]] result_type min() const;
+    [[nodiscard]] result_type max() const;
+    [[nodiscard]] std::string name() const;
 
 private:
     gsl_rng* r;
