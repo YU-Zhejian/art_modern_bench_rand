@@ -126,25 +126,26 @@ else()
     add_library(benchrand STATIC ${LIBBENCHRAND_SOURCES})
 endif()
 target_compile_options(benchrand PRIVATE ${COMPILE_OPTIONS})
+target_link_libraries( benchrand PUBLIC ${LINK_LIBS} slim_sfmt)
 
 add_executable(bench_bits exe/bench_bits.cc)
-target_link_libraries(bench_bits PUBLIC ${LINK_LIBS} benchrand slim_sfmt)
+target_link_libraries(bench_bits PRIVATE benchrand)
 target_compile_options(bench_bits PRIVATE ${COMPILE_OPTIONS})
 
 add_executable(bench_uniform_real exe/bench_uniform_real.cc)
-target_link_libraries(bench_uniform_real PUBLIC ${LINK_LIBS} benchrand)
+target_link_libraries(bench_uniform_real PRIVATE benchrand)
 target_compile_options(bench_uniform_real PRIVATE ${COMPILE_OPTIONS})
 
-if(DEFINED TESTU01_LIB
-   AND DEFINED TESTU01_MYLIB
-   AND DEFINED TESTU01_PROBDIST)
+if(DEFINED TESTU01_LIB AND TESTU01_LIB
+   AND DEFINED TESTU01_MYLIB AND TESTU01_MYLIB
+   AND DEFINED TESTU01_PROBDIST AND TESTU01_PROBDIST)
     add_executable(bench_testu01 exe/bench_testu01.cc)
-    target_link_libraries(bench_testu01 PUBLIC ${LINK_LIBS} benchrand ${TESTU01_LIB} ${TESTU01_MYLIB}
+    target_link_libraries(bench_testu01 PRIVATE benchrand ${TESTU01_LIB} ${TESTU01_MYLIB}
                                                ${TESTU01_PROBDIST})
     target_compile_options(bench_testu01 PRIVATE ${COMPILE_OPTIONS})
 
     add_executable(testu01_main exe/testu01_main.c)
-    target_link_libraries(testu01_main PUBLIC ${LINK_LIBS} benchrand ${TESTU01_LIB} ${TESTU01_MYLIB}
+    target_link_libraries(testu01_main PRIVATE benchrand ${TESTU01_LIB} ${TESTU01_MYLIB}
                                               ${TESTU01_PROBDIST})
     target_compile_options(testu01_main PRIVATE ${COMPILE_OPTIONS})
 endif()
